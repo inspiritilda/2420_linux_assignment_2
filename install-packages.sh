@@ -1,23 +1,24 @@
 #!/bin/bash
 
-# This script installs essential software packages.
+# This script will install the required software packages on the system.
 
 # Define a list of packages to install
 PACKAGES=("kakoune" "tmux")
 
 # Function to install packages
 install_packages() {
-    echo "Updating package list..."
+    echo "Updating system package list..."
+    # Install packages listed in PACKAGES array
     sudo pacman -Syu --noconfirm "${PACKAGES[@]}"
 
     # Check if installation was successful
     if [[ $? -ne 0 ]]; then
-        echo "Error: Package installation failed."
+        echo "Something went wrong. The packages didn't get installed."
         exit 1
     else
-        echo "Packages installed successfully."
+        echo "All packages installed successfully."
     fi
 }
 
-# Run the install function
+# To run the install function
 install_packages
