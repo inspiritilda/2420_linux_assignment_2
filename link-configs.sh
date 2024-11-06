@@ -6,8 +6,8 @@
 echo "Setting up symbolic links..."
 
 # Check if the source files exist before creating links
-if [ -f "/home/arch/2420_linux_assignment_2/config/bashrc" ]; then
-    ln -sf /home/arch/2420_linux_assignment_2/config/bashrc ~/.bashrc
+if [ -f "/home/arch/2420_linux_assignment_2/config/bashrc" ]; then # -f checks if a file exists and is a regular file
+    ln -sf /home/arch/2420_linux_assignment_2/config/bashrc ~/.bashrc # Creates a symbolic link at destination pointing to source
     echo "bashrc linked successfully."
 else
     echo "bashrc file not found!"
@@ -15,7 +15,7 @@ fi
 
 # Link for kakrc file
 if [ -f "/home/arch/2420_linux_assignment_2/config/kak/kakrc" ]; then
-    mkdir -p ~/.config/kak
+    mkdir -p ~/.config/kak # Creates a directory and any parent directories
     ln -sf /home/arch/2420_linux_assignment_2/config/kak/kakrc ~/.config/kak/kakrc
     echo "kakrc linked successfully."
 else
