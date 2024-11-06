@@ -23,7 +23,7 @@ Purpose of this file is to execute the previeous two scripts to automate the ent
 
 ## `create-user.sh`
 Purpose of this file is to automate the creation of a new user with the required settings.
-- Promptsfor the new user's username, shell and groups.
+- Prompts for the new user's username, shell and groups.
 - Checks if the script is being run with root privileges and exits with an error message if not.
 - Creates the new user and sets the user's primary group to match their username.
 - Creates a home directory for the new user and copies the contents of `/etc/skel` into it.
