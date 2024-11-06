@@ -2,33 +2,30 @@
 
 # This script will create symbolic links for the configuration files.
 
-# Set up symbolic links for configuration files
 echo "Setting up symbolic links..."
 
-# Check if the source files exist before creating links
-if [ -f "/home/arch/2420_linux_assignment_2/config/bashrc" ]; then # -f checks if a file exists and is a regular file
-    ln -sf /home/arch/2420_linux_assignment_2/config/bashrc ~/.bashrc # Creates a symbolic link at destination pointing to source
+# Link for bashrc
+if [ ! -f ~/.bashrc ]; then
+    ln -s /home/arch/2420_linux_assignment_2/config/home/bashrc ~/.bashrc
     echo "bashrc linked successfully."
 else
-    echo "bashrc file not found!"
+    echo "bashrc already exists."
 fi
 
-# Link for kakrc file
-if [ -f "/home/arch/2420_linux_assignment_2/config/kak/kakrc" ]; then
-    mkdir -p ~/.config/kak # Creates a directory and any parent directories
-    ln -sf /home/arch/2420_linux_assignment_2/config/kak/kakrc ~/.config/kak/kakrc
+# Link for kakrc
+if [ ! -f ~/.config/kak/kakrc ]; then
+    ln -s /home/arch/2420_linux_assignment_2/config/kak/kakrc ~/.config/kak/kakrc
     echo "kakrc linked successfully."
 else
-    echo "kakrc file not found!"
+    echo "kakrc already exists."
 fi
 
-# Link for tmux.conf file
-if [ -f "/home/arch/2420_linux_assignment_2/config/tmux/tmux.conf" ]; then
-    mkdir -p ~/.config/tmux
-    ln -sf /home/arch/2420_linux_assignment_2/config/tmux/tmux.conf ~/.config/tmux/tmux.conf
+# Link for tmux.conf
+if [ ! -f ~/.config/tmux/tmux.conf ]; then
+    ln -s /home/arch/2420_linux_assignment_2/config/tmux/tmux.conf ~/.config/tmux/tmux.conf
     echo "tmux.conf linked successfully."
 else
-    echo "tmux.conf file not found!"
+    echo "tmux.conf already exists."
 fi
 
 echo "Symbolic links set up successfully."
