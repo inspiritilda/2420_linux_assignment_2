@@ -1,31 +1,21 @@
 #!/bin/bash
 
-# This script will create symbolic links for the configuration files
-# to make sure your setup stays clean and organized.
+# This script will create symbolic links for the configuration files.
 
-# Define the source directory for configuration files
-CONFIG_DIR="$(pwd)/config"
-HOME_DIR="$HOME"
+# Set up symbolic links for configuration files
+echo "Setting up symbolic links..."
 
-# Function to create symbolic links
-create_links() {
-    echo "Setting up symbolic links..."
+# Link for bashrc file
+ln -sf /home/arch/2420_linux_assignment_2/config/bashrc ~/.bashrc
 
-    # Create the ~/bin directory and link to the original files in config/bin
-    mkdir -p "$HOME_DIR/bin" # Create the bin directory if it doesn't exist
-    ln -sfn "$CONFIG_DIR/bin/*" "$HOME_DIR/bin/" # Link files from config/bin to ~/bin
+# Link for kakrc file (assuming kak config is inside config/kak)
+mkdir -p ~/.config/kak
+ln -sf /home/arch/2420_linux_assignment_2/config/kak/kakrc ~/.config/kak/kakrc
 
-    # Create the ~/.config directory and link to config directories like kak and tmux
-    mkdir -p "$HOME_DIR/.config" # Make sure the .config directory exists
-    ln -sfn "$CONFIG_DIR/kak" "$HOME_DIR/.config/kak" # Link kakoune config
-    ln -sfn "CONFIG_DIR/tmux" "$HOME_DIR/.config/tmux" # Link tmux config
+# Link for tmux.conf file (assuming tmux config is inside config/tmux)
+mkdir -p ~/.config/tmux
+ln -sf /home/arch/2420_linux_assignment_2/config/tmux/tmux.conf ~/.config/tmux/tmux.conf
 
-    # Create a symbolic link for the bashrc file
-    ls -sfn "$CONFIG_DIR/home/bashrc" "$HOME_DIR/.bashrc" # Link bashrc
+# Additional links for other files can be added similarly
 
-    echo "Symbolic links set up successfully."
-
-}
-
-# To run the create_links function
-create_links
+echo "Symbolic links set up successfully."
