@@ -1,0 +1,4 @@
+# Basic Kakoune configuration
+set -option global editor.show_line_numbers true
+set-option global theme 'default'
+set-option global mouse-enabled true
