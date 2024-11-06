@@ -5,21 +5,15 @@
 
 # Function to display usage information
 usage() {
-    echo "Usage: $0 [-p] [-l] [-h]"
+    echo "Usage: $0 [-p] [-l] [-h]" # Displays the script's name and optional flags that can be used to modify its behaviour
     echo " -p Install packages"
-    echo "  -l Create symbolic links for configuration files"
-    echo "  -h Display this help message"
+    echo " -l Create symbolic links for configuration files"
+    echo " -h Display this help message"
     exit 1
 }
 
-# Check if the script is run as root
-if [[ $EUID -ne 0 ]]; then
-    echo "This script must be run as root" 1>&2
-    exit 1
-fi
-
 # Parse the command-line options
-while getopts "plh" opt; do
+while getopts "plh" opt; do # Initiates a loop to parse command-line options to passed to the script, with case statement handling each options behaviour
     case "$opt" in
         p)  # Install packages
             echo "Installing packages..."
@@ -33,14 +27,14 @@ while getopts "plh" opt; do
             usage
             ;;
         *)  # Invalid option
-            echo "Invalid option: -$OPTARG" 1>&2
+            echo "Invalid option: -$OPTARG" 1>&2 # Prints an error message to standard error when an invalid option is passed to the script
             usage
             ;;
     esac
 done
 
 # If no options are given, display the usage information
-if [ $OPTIND -eq 1 ]; then
+if [ $OPTIND -eq 1 ]; then # This condition checks if no options have been processed yet by getopts
     usage
 fi
 
