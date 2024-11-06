@@ -1,34 +1,35 @@
 #!/bin/bash
 
-# This script automates the system setup process by calling other scripts based on options.
+# This script will handle the set up.
+# It takes options to either install packages, link configuration files, or do both.
 
-# Function to show usage
+# Function to display usage instructions
 usage() {
     echo "Usage: $0 [-i] [-l]"
     echo "Options:"
-    echo "  -i  Install packages"
+    echo "  -i  Install required packages"
     echo "  -l  Link configuration files"
     exit 1
 }
 
-# Parse command-line options
+# Parse the command-line options
 while getopts ":il" opt; do
     case $opt in
         i)
             echo "Installing packages..."
-            ./install-packages.sh
+            ./install-packages.sh # Call the install packages script
             ;;
         l)
             echo "Linking configuration files..."
-            ./link-configs.sh
+            ./link-configs.sh # Call the link configs script
             ;;
         *)
-            usage
+            usage # Show usage if an invalid option is provided
             ;;
     esac
 done
 
-# If no options are provided, show usage
+# If no options are given, show usage
 if [ $OPTIND -eq 1 ]; then
     usage
 fi
