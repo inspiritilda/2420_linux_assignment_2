@@ -1,49 +1,74 @@
 #!/bin/bash
 
-# This script creates a new user with specified settings.
+# This script will create a new user with a specified shell, home directory, groups, and set their password.# It directly writes to the necessary files and doesn't use any user management tools.
 
-# Function to show usage
+# Function to display usage instructions
 usage() {
-    echo "Usage: $0 -u <username> -s <shell> [-g <group1,group2,...>]"
+    echo "Usage: $0 -u username -s shell -p password [-g group1,group2,...]"
+    echo "  -u  Username of the new user"
+    echo "  -s  Shell for the new user"
+    echo "  -p  Password for the new user"
+    echo "  -g  Additional groups to add the user to"
     exit 1
 }
 
-# Check for root privileges
-if [[ $EUID -ne 0 ]]; then
-    echo "This script must be run as root."
+# Check if script is run as root
+if [ "$(id -u)" -ne 0 ]; then
+    echo "This script must be run as root. Please use sudo."
     exit 1
 fi
 
 # Parse command-line options
-while getopts ":u:s:g:" opt; do
+while getopts ":u:s:p:g:" opt; do
     case $opt in
-        u) USERNAME="$OPTARG" ;;
-        s) SHELL="$OPTARG" ;;
-        g) IFS=',' read -r -a GROUPS <<< "$OPTARG" ;;
-        *) usage ;;
+        u)
+            USERNAME=$OPTARG
+            ;;
+        s)
+            SHELL=$OPTARG
+            ;;
+        p)
+            PASSWORD=$OPTARG
+            ;;
+        g)
+            GROUPS=$OPTARG
+            ;;
+        *)
+            usage
+            ;;
     esac
 done
 
-# Check if username and shell are provided
-if [ -z "$USERNAME" ] || [ -z "$SHELL" ]; then
+# Check if all required options are provided
+if [ -z "$USERNAME" ] || [ -z "$SHELL" ] || [ -z "$PASSWORD" ]; then
     usage
 fi
 
-# Create the user with the specified shell
-useradd -m -s "$SHELL" "$USERNAME"
+# Create the home directory
+HOME_DIR="/home/$USERNAME"
+mkdir -p "$HOME_DIR"
 
-# Check if the user was created successfully
-if [[ $? -ne 0 ]]; then
-    echo "Error: User creation failed."
-    exit 1
+# Copy the contents of /etc/skel to the new user's home directory
+cp -r /etc/skel/. "$HOME_DIR"
+
+# Set the owner of the home directory and files to the new user
+chown -R "$USERNAME":"$USERNAME" "$HOME_DIR"
+
+# Create the new user
+useradd -m -d "$HOME_DIR" -s "$SHELL" "$USERNAME"
+
+# Set the password for the new user using the 'passwd' utility
+echo "$USERNAME:$PASSWORD" | chpasswd
+
+# Add the new user to any additional groups
+if [ -n "$GROUPS" ]; then
+    for GROUP in $(echo "$GROUPS" | tr ',' ' '); do
+        usermod -aG "$GROUP" "$USERNAME"
+    done
 fi
 
-# Set the password for the new user
-passwd "$USERNAME"
+# Set the primary group to the new user's username
+usermod -g "$USERNAME" "$USERNAME"
 
-# Add user to additional groups
-for GROUP in "${GROUPS[@]}"; do
-    usermod -aG "$GROUP" "$USERNAME"
-done
+echo "User $USERNAME created successfully with shell $SHELL and password set."
 
-echo "User '$USERNAME' created successfully with shell '$SHELL'."
