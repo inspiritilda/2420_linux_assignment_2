@@ -1,11 +1,11 @@
 # 2420_linux_assignment_2
 
-## `install-packages.sh`
+## `install-packages`
 Purpose of this file is to install required packages for the system setup.
 - Loops through the list and installs each package using a package manager.
 - Checks for the successful installation of each pakcage and reports errors if any package fails to install.
 
-## `link-configs.sh`
+## `link-configs`
 Purpose of this file is to create symbolic links for configuration files.
 - Checks if the required directories exists, creating them if necessary.
 - Creates symbolic links for directories and files:
@@ -14,14 +14,14 @@ Purpose of this file is to create symbolic links for configuration files.
   - Links `~/.bashrc` to the `home/bashrc` file from the repository.
 - Ensures that the symbolic links preserve the structure and point to the right configuration files.
 
-## `setup.sh`
+## `setup`
 Purpose of this file is to execute the previeous two scripts to automate the entire set up process.
 - Provides a command-line interface for users to run either `install-packages.sh` or `link-configs.sh` or both depending on the provided options (using `getopts`).
 - Includes error handling to ensure that each script runs successfully.
 - Handles missing arguments or invalid options, providing user-friendly error messages and guidance.
 - Allows customization of behaviour through command-line options.
 
-## `create-user.sh`
+## `create-user`
 Purpose of this file is to automate the creation of a new user with the required settings.
 - Prompts for the new user's username, shell and groups.
 - Checks if the script is being run with root privileges and exits with an error message if not.
