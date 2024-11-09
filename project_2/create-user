@@ -2,21 +2,38 @@
 
 # This script will create a new user with a specified shell, home directory, groups, and set their password.# It directly writes to the necessary files and doesn't use any user management tools.
 
+# Check if running as root
+if [[ $EUID -ne 0 ]]; then
+	echo "This script must be run as root."
+	exit 1
+fi
+
+CONFIG_FILE="./user-defaults"
+shell="/bin/bash"
+groups=""
+
+if [[ -f "$CONFIG_FILE" ]]; then
+	source "$CONFIG_FILE"
+fi
+
 # Ask for the username
 read -p "Enter the username: " username
 
-# Ask for the shell (default /bin/bash)
-read -p "Enter the shell (default /bin/bash): " shell
-shell=${shell:-/bin/bash}  # Use /bin/bash if no input is given
+# Ask for the shell
+read -p "Enter the shell (default /bin/bash): " input_shell
+shell=${input_shell:-$shell}
 
 # Ask for additional groups
-read -p "Enter additional groups (separate with commas, or leave blank): " groups
+read -p "Enter additional groups (default: $groups): " input_groups
+groups=${input_groups:-$groups}
 
-# Create the group if not already present
-groupadd "$username"
+# Check if group already exists, if not create group
+if ! grep -q "^${username}:" /etc/group; then
+	groupadd "$username"
+fi
 
-# Create the user with the specified shell and group
-useradd -m -s "$shell" -g "$username" $username
+# Create the user with the specified shell, primary group, and home directory
+useradd -m -s "$shell" -g "$username" $username -G "$groups" "$username"
 
 # Set the password
 read -s -p "Enter password for $username: " password
