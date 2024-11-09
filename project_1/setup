@@ -12,29 +12,39 @@ usage() {
     exit 1
 }
 
+# Check if required scripts exist and are executable
+SCRIPT_DIR="$(dirname "$0")"
+INSTALL_SCRIPT="$SCRIPT_DIR/install-packages"
+LINK_SCRIPT="$SCRIPT_DIR/link-configs"
+
+if [[ ! -x "$INSTALL_SCRIPT" || ! -x "$LINK_SCRIPT" ]]; then
+	echo "Error: Required scripts not found or not executable."
+	exit 1
+fi
+
 # Parse the command-line options
 while getopts "plh" opt; do # Initiates a loop to parse command-line options to passed to the script, with case statement handling each options behaviour
     case "$opt" in
         p)  # Install packages
             echo "Installing packages..."
-            ./install-packages.sh  # Call the install packages script
+            "$INSTALL_SCRIPT"  # Call the install packages script
             ;;
         l)  # Create symbolic links for configuration files
             echo "Creating symbolic links..."
-            ./create-symbolic-links.sh  # Call the create symbolic links script
+            "$LINK_SCRIPT"  # Call the create symbolic links script
             ;;
         h)  # Display help message
             usage
             ;;
         *)  # Invalid option
-            echo "Invalid option: -$OPTARG" 1>&2 # Prints an error message to standard error when an invalid option is passed to the script
+            echo "Invalid option: -$OPTARG" >&2 # Prints an error message to standard error when an invalid option is passed to the script
             usage
             ;;
     esac
 done
 
 # If no options are given, display the usage information
-if [ $OPTIND -eq 1 ]; then # This condition checks if no options have been processed yet by getopts
+if [[ $OPTIND -eq 1 ]]; then # This condition checks if no options have been processed yet by getopts
     usage
 fi
 
