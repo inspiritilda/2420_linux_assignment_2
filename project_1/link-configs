@@ -4,9 +4,16 @@
 
 echo "Setting up symbolic links..."
 
+# Set the base path for configuration files
+BASE_DIR="$(pwd)/config"
+
+# Ensure necessary directories exist
+mkdir -p ~/.config/kak
+mkdir -p ~/.config/tmux
+
 # Link for bashrc
 if [ ! -f ~/.bashrc ]; then
-    ln -s /home/arch/2420_linux_assignment_2/config/home/bashrc ~/.bashrc
+    ln -s "$BASE_DIR/home/bashrc" ~/.bashrc
     echo "bashrc linked successfully."
 else
     echo "bashrc already exists."
@@ -14,7 +21,7 @@ fi
 
 # Link for kakrc
 if [ ! -f ~/.config/kak/kakrc ]; then
-    ln -s /home/arch/2420_linux_assignment_2/config/kak/kakrc ~/.config/kak/kakrc
+    ln -s "$BASE_DIR/kak/kakrc" ~/.config/kak/kakrc
     echo "kakrc linked successfully."
 else
     echo "kakrc already exists."
@@ -22,7 +29,7 @@ fi
 
 # Link for tmux.conf
 if [ ! -f ~/.config/tmux/tmux.conf ]; then
-    ln -s /home/arch/2420_linux_assignment_2/config/tmux/tmux.conf ~/.config/tmux/tmux.conf
+    ln -s "$BASE_DIR/tmux/tmux.conf" ~/.config/tmux/tmux.conf
     echo "tmux.conf linked successfully."
 else
     echo "tmux.conf already exists."
