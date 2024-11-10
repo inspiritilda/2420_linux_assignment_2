@@ -1,6 +1,10 @@
 #!/bin/bash
 
-# This script will install the required software packages on the system.
+# This script will install the required packages for the system.
+# Reads a list of packages from package-list and installs them using pacman.
+# Checks if pacman is available and reports an error if it's not.
+# Executes a system update (pacman -Syu) before installing packages.
+# Provides feedback on whether the installation succeeded or if any packages failed.
 
 # Loading packages from package-list file
 packages=$(cat ./package-list)
