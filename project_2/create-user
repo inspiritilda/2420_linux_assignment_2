@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# This script will create a new user with a specified shell, home directory, groups, and set their password.# It directly writes to the necessary files and doesn't use any user management tools.
+# This script will create a new user with a specified shell, home directory, groups, and set their password.
+# It directly writes to the necessary files and doesn't use any user management tools.
 
 # Check if running as root
 if [[ $EUID -ne 0 ]]; then
@@ -19,6 +20,12 @@ fi
 # Ask for the username
 read -p "Enter the username: " username
 
+# Checj if the user already exists
+if id "$username" &>/dev/null; then
+    echo "Error: User '$username' already exists."
+    exit 1
+fi
+
 # Ask for the shell
 read -p "Enter the shell (default /bin/bash): " input_shell
 shell=${input_shell:-$shell}
@@ -30,22 +37,31 @@ groups=${input_groups:-$groups}
 # Check if group already exists, if not create group
 if ! grep -q "^${username}:" /etc/group; then
 	groupadd "$username"
+	echo "Group '$username' created successfully."
+else
+	echo "Group '$username' already exists."
 fi
 
 # Create the user with the specified shell, primary group, and home directory
-useradd -m -s "$shell" -g "$username" $username -G "$groups" "$username"
-
-# Set the password
-read -s -p "Enter password for $username: " password
-echo
-read -s -p "Confirm password for $username: " password2
-echo
-
-if [[ "$password" == "$password2" ]]; then
-    echo "$username:$password" | chpasswd
-    chown -R "$username:$username" "/home/$username"
-    echo "User $username created successfully."
+if useradd -m -s "$shell" -g "$username" -G "$groups" "$username"; then
+    echo "User '$username' created successfully."
 else
-    echo "Passwords do not match!"
+    echo "Failed to create user '$username'."
     exit 1
 fi
+
+# Set the password
+while true; do
+    read -s -p "Enter password for $username: " password
+    echo
+    read -s -p "Confirm password for $username: " password2
+    echo
+    if [[ "$password" == "$password2" ]]; then
+        echo "$username:$password" | chpasswd
+        chown -R "$username:$username" "/home/$username"
+        echo "Password set successfully for user '$username'."
+        break
+    else
+        echo "Passwords do not match. Please try again."
+    fi
+done
