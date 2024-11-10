@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# This script will create a new user with a specified shell, home directory, groups, and set their password.
-# It directly writes to the necessary files and doesn't use any user management tools.
+# This script will create a new user with custom settings.
+# Ensures the script runs with root privileges.
+# Promps for the new user's username, shell, and groups.
+# Checks if the specified groups exists.
+# Creates the user with the specified shell, promary group, and home directory.
+# Sets the user's password, confirming it before proceeding.
+# Provides feedback for each step, including success or failure messages.
 
 # Check if running as root
 if [[ $EUID -ne 0 ]]; then
@@ -20,7 +25,7 @@ fi
 # Ask for the username
 read -p "Enter the username: " username
 
-# Checj if the user already exists
+# Check if the user already exists
 if id "$username" &>/dev/null; then
     echo "Error: User '$username' already exists."
     exit 1
