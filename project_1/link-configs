@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# This script will create symbolic links for the configuration files.
+# This script will create symbolic links for the configuration files, ensuring correct system setup.
+# Checks if necessary directories exist and creates them if needed.
+# Links specific configuration files in the repository.
+# Verifies if symbolic links already exist and are correctly pointing to the specified files, recreating links if needed.
 
 echo "Setting up symbolic links..."
 
@@ -18,7 +21,7 @@ else
     echo "bashrc already linked."
 fi
 
-# Link for kakrc
+# Link for kakrc if not linked or linked incorrectly
 if [ ! -L ~/.config/kak/kakrc || [ "$(readlink ~/.config/kak/kakrc)" != "$BASE_DIR/kak/kakrc" ]; then
     ln -sf "$BASE_DIR/kak/kakrc" ~/.config/kak/kakrc
     echo "kakrc linked successfully."
@@ -26,7 +29,7 @@ else
     echo "kakrc already linked."
 fi
 
-# Link for tmux.conf
+# Link for tmux.conf if not linked or linked incorrectly
 if [ ! -L ~/.config/tmux/tmux.conf ] || [ "$(readlink ~/.config/tmux/tmux.conf)" != "$BASE_DIR/tmux/tmux.conf" ]; then
     ln -s "$BASE_DIR/tmux/tmux.conf" ~/.config/tmux/tmux.conf
     echo "tmux.conf linked successfully."
