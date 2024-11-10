@@ -8,8 +8,7 @@ echo "Setting up symbolic links..."
 BASE_DIR="$(pwd)/config"
 
 # Ensure necessary directories exist
-mkdir -p ~/.config/kak
-mkdir -p ~/.config/tmux
+mkdir -p ~/.config/kak ~/.config/tmux ~/bin
 
 # Link for bashrc
 if [ ! -f ~/.bashrc ]; then

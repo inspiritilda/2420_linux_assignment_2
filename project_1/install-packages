@@ -2,18 +2,20 @@
 
 # This script will install the required software packages on the system.
 
-# Load packages from package-list file
+# Loading packages from package-list file
 packages=$(cat ./package-list)
 
-# Construct the install command with system update
-install="pacman -S --noconfirm"
+# Check if pacman is available
+if ! command -v pacman &>/dev/null; then
+	echo "Error: pacman is not installed or available on this system."
+	exit 1
+fi
 
-# Append each package to the install command
-for package in ${packages[@]}; do
-	install+=" ${packages[@]}"
-done
-
-# Execute the install command
+# Function to install command with system update and install each package
 echo "Updating system package list and installing packages..."
-$install
-echo "All packages are installed successfully."
+if pacman -Syu --noconfirm $pakcages; then
+	echo "All packages installed successfully."
+else
+	echo "Failed to install some packages."
+	exit 1
+fi
