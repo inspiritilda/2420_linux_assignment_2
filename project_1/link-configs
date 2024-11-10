@@ -10,28 +10,28 @@ BASE_DIR="$(pwd)/config"
 # Ensure necessary directories exist
 mkdir -p ~/.config/kak ~/.config/tmux ~/bin
 
-# Link for bashrc
-if [ ! -f ~/.bashrc ]; then
-    ln -s "$BASE_DIR/home/bashrc" ~/.bashrc
+# Link for bashrc if not linked or linked incorrectly
+if [ ! -L ~/.bashrc ] || [ "$(readlink ~/.bashrc)" != "$BASE_DIR/home/bashrc"]; then
+    ln -sf "$BASE_DIR/home/bashrc" ~/.bashrc
     echo "bashrc linked successfully."
 else
-    echo "bashrc already exists."
+    echo "bashrc already linked."
 fi
 
 # Link for kakrc
-if [ ! -f ~/.config/kak/kakrc ]; then
-    ln -s "$BASE_DIR/kak/kakrc" ~/.config/kak/kakrc
+if [ ! -L ~/.config/kak/kakrc || [ "$(readlink ~/.config/kak/kakrc)" != "$BASE_DIR/kak/kakrc" ]; then
+    ln -sf "$BASE_DIR/kak/kakrc" ~/.config/kak/kakrc
     echo "kakrc linked successfully."
 else
-    echo "kakrc already exists."
+    echo "kakrc already linked."
 fi
 
 # Link for tmux.conf
-if [ ! -f ~/.config/tmux/tmux.conf ]; then
+if [ ! -L ~/.config/tmux/tmux.conf ] || [ "$(readlink ~/.config/tmux/tmux.conf)" != "$BASE_DIR/tmux/tmux.conf" ]; then
     ln -s "$BASE_DIR/tmux/tmux.conf" ~/.config/tmux/tmux.conf
     echo "tmux.conf linked successfully."
 else
-    echo "tmux.conf already exists."
+    echo "tmux.conf already linked."
 fi
 
 echo "Symbolic links set up successfully."
