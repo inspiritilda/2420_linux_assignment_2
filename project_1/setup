@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# This script will handle the set up.
-# It takes options to either install packages, link configuration files, or do both.
+# This script will orchestrate the set up by running the install-packages and link-configs scripts.
+# Offers command-line options for flexibility in running package installation, linking configurations, or displaying help.
+# Verifies that required scripts are executable and accessible, reporting errors if not.
+# Provides error handling for invalid or missing options, displaying usage guidance when needed.
 
 # Function to display usage information
 usage() {
