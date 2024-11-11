@@ -9,7 +9,7 @@
 This repository contains scripts for Assignment 2 of the ACIT 2420 course.
 The assignment is divided into two projects, each with scripts to automate the setup of a project environment or to streamline user creation.
 
-To get started:
+### To get started:
 1. Ensure `git` is installed on your system.
 2. Clone the repository:
    ```bash
