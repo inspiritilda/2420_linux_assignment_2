@@ -1,30 +1,60 @@
 # 2420_linux_assignment_2
 
-## `install-packages`
-Purpose of this file is to install required packages for the system setup.
-- Loops through the list and installs each package using a package manager.
-- Checks for the successful installation of each pakcage and reports errors if any package fails to install.
+## Table of Contents
+- [Introduction](#introduction)
+- [Project 1](#project_1)
+- [Project 2](#project_2)
 
-## `link-configs`
-Purpose of this file is to create symbolic links for configuration files.
-- Checks if the required directories exists, creating them if necessary.
-- Creates symbolic links for directories and files:
-  - Links `~/bin` to the `bin/` directory from the repository.
-  - Links `~/.config` to the `config/` directory from the repository.
-  - Links `~/.bashrc` to the `home/bashrc` file from the repository.
-- Ensures that the symbolic links preserve the structure and point to the right configuration files.
+## Introduction
+This repository contains scripts for Assignment 2 of the ACIT 2420 course.
+The assignment is divided into two projects, each with scripts to automate the setup of a project environment or to streamline user creation.
 
-## `setup`
-Purpose of this file is to execute the previeous two scripts to automate the entire set up process.
-- Provides a command-line interface for users to run either `install-packages.sh` or `link-configs.sh` or both depending on the provided options (using `getopts`).
-- Includes error handling to ensure that each script runs successfully.
-- Handles missing arguments or invalid options, providing user-friendly error messages and guidance.
-- Allows customization of behaviour through command-line options.
+To get started:
+1. Ensure `git` is installed on your system.
+2. Clone the repository:
+   ```bash
+   git clone https://github.com/inspiritilda/2420_linux_assignment_2.git
+   ```
 
-## `create-user`
-Purpose of this file is to automate the creation of a new user with the required settings.
-- Prompts for the new user's username, shell and groups.
-- Checks if the script is being run with root privileges and exits with an error message if not.
-- Creates the new user and sets the user's primary group to match their username.
-- Creates a home directory for the new user and copies the contents of `/etc/skel` into it.
-- Sets a password for the new user using the `passwd` utility.
+## project_1
+Scripts to automate the setup of a new Linux Distro installation by installing packages and setting up configuration files.
+
+### Scripts and Files
+1. `install-packages`: Installs packages defined in `package-list`.
+  Creates a package list if not present.
+  * Usage:
+    ```bash
+    chmod +x install-packages
+    sudo ./install-packages
+    ```
+
+2. `package-list`: A plain text file listing packages to be installed.
+
+3. `setup`: Runs the entire setup process, including installing packages and configuration files.
+  * Usage:
+    ```bash
+    chmod +x setup
+    sudo ./setup <option(s)>
+    ```
+  * Options:
+    * `-p`: Runs the install-packages script.
+    * `-l`: Runs the link-configs script.
+    * `-h`: Displays information about available options.
+
+4. `link-configs`: Creates symbolic links to configuration files from the repository to your system.
+  * Usage:
+    ```bash
+    chmod +x link-configs
+    sudo ./link-configs
+    ```
+
+## project_2
+Script for creating a new user on the system with limited options for customization.
+
+### Script
+`create-user`: Automates user creation with customizable options for shell, groups, and home directory.
+  * Usage:
+    ```bash
+      chmod +x create-user
+      sudo ./create-user <option(s)> <username>
+    ```
